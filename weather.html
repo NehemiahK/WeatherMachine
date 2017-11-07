@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weather App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link href='https://fonts.googleapis.com/css?family=Shadows Into Light' rel='stylesheet'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+
+    if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+
+      var long = "&lon=" + position.coords.longitude;
+      var lat = "?lat=" + position.coords.latitude;
+
+    var api = "https://fcc-weather-api.glitch.me/api/current"
+    var url= api + lat + long;
+
+    $.getJSON(url, function(json) {
+
+        var location = json.name;
+
+        var country = json.sys.country;
+
+        var cels = json.main.temp;
+
+        var faren = cels * 9/5 + 32;
+
+        var farenh = faren.toFixed(2) + " F";
+        var celsy = cels.toFixed(2) + " C";
+
+        var piccy = json.weather[0].icon;
+
+        var picture = "<img src=" + piccy ;
+        var pic1=  " alt='weather'" ;
+        var h = " height='102' "
+        var w = " width='102'> "
+        var pic2 = picture + pic1 + h + w;
+
+        $("#loco").html(location);
+        $("#temp").html(farenh);
+        $("#picture").html(pic2);
+
+
+        $("#change").on("click", function(){
+
+            var thetemp = $("#temp").html();
+
+            if (thetemp == farenh){
+                $("#temp").html(celsy);
+            }
+            if (thetemp == celsy){
+                $("#temp").html(farenh);
+            }
+
+          });
+
+});
+  });
+}
+
+});
+</script>
+
+  <style>
+
+  html,body {
+   font-family: 'Shadows Into Light';
+   font-size: 40px;
+   color: black;
+   background-color: #404444;
+   text-align: center;
+   font-weight: bold;
+  }
+  #details{
+      margin-top: 20px;
+      height: 230px;
+  }
+
+  </style>
+</head>
+<body>
+    <div class="container" id="details">
+
+<div id ="loco">
+</div>
+
+<div id="picture">
+    <h1>Weather is Loading.......</h1>
+</div>
+
+<div id="temp">
+</div>
+</div>
+<div class="container" id="buttons">
+<div>
+    <button class="btn btn-primary btn-lg" id ="change">&#8451; / &#8457;</button>
+</div>
+</div>
+</body>
+</html>
